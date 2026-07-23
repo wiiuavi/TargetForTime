@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bc3v51mrcx4km"]
+
+[ext_resource type="Script" uid="uid://0ofwx6t35kkt" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://0qw65x8h63b" path="res://target.tscn" id="2_0xm2m"]
+
+[node name="main" type="Node3D" unique_id=273629963]
+script = ExtResource("1_ig7tw")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=24846068]
+
+[node name="Target" parent="." unique_id=502266603 instance=ExtResource("2_0xm2m")]

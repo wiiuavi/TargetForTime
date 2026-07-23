@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://bc3v51mrcx4km"]
+
+[ext_resource type="Script" uid="uid://0ofwx6t35kkt" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://wifcdubmjymy" path="res://media/crosshair.png" id="2_0xm2m"]
+
+[node name="main" type="Node3D" unique_id=273629963]
+script = ExtResource("1_ig7tw")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=24846068]
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D" unique_id=1262064692]
+target_position = Vector3(0, 0, -100)
+collide_with_areas = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=709267534]
+
+[node name="crosshair" type="TextureRect" parent="CanvasLayer" unique_id=1577529359]
+custom_minimum_size = Vector2(32, 32)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(16, 16)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_0xm2m")
+
+[node name="PauseMenu" type="Control" parent="CanvasLayer" unique_id=153373197]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="CanvasLayer/PauseMenu" unique_id=1641173535]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="MenuBox" type="VBoxContainer" parent="CanvasLayer/PauseMenu" unique_id=774235455]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=580903173]
+layout_mode = 2
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=182128503]
+layout_mode = 2
+text = "Resume"
+
+[node name="SensBox" type="HBoxContainer" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=1699728351]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/MenuBox/SensBox" unique_id=179710535]
+layout_mode = 2
+text = "Sensitivity: "
+
+[node name="SensSlider" type="HSlider" parent="CanvasLayer/PauseMenu/MenuBox/SensBox" unique_id=1532893351]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+min_value = 0.001
+max_value = 0.01
+step = 0.001
+value = 0.003
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=444891299]
+layout_mode = 2
+text = "Quit Game"
+
+[node name="CrosshairSizeBox" type="HBoxContainer" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=2035253788]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PauseMenu/MenuBox/CrosshairSizeBox" unique_id=1953470]
+layout_mode = 2
+text = "Crosshair Size: "
+
+[node name="SizeSlider" type="HSlider" parent="CanvasLayer/PauseMenu/MenuBox/CrosshairSizeBox" unique_id=748710559]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+min_value = 0.1
+max_value = 3.0
+step = 0.1
+value = 1.0
