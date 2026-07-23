@@ -12,7 +12,7 @@ var targetScene: PackedScene = preload("res://target.tscn")
 @onready var sizeSlider: HSlider = $CanvasLayer/PauseMenu/MenuBox/CrosshairSizeBox/SizeSlider
 @onready var quitButton: Button = $CanvasLayer/PauseMenu/MenuBox/QuitButton
 
-var sensitivity: float = 0.003
+var sensitivity: float = 0.001
 var savePath: String = "user://settings.cfg"
 
 func _ready() -> void:
@@ -24,6 +24,10 @@ func _ready() -> void:
 	quitButton.pressed.connect(_onQuitPressed)
 	sensSlider.value_changed.connect(_onSensitivityChanged)
 	sizeSlider.value_changed.connect(_onCrosshairSizeChanged)
+	
+	sensSlider.min_value = 0.0001
+	sensSlider.max_value = 0.005
+	sensSlider.step = 0.0001
 	
 	loadSettings()
 	
@@ -84,7 +88,7 @@ func loadSettings() -> void:
 	var config = ConfigFile.new()
 	var error = config.load(savePath)
 	if error == OK:
-		sensitivity = config.get_value("settings", "sensitivity", 0.003)
+		sensitivity = config.get_value("settings", "sensitivity", 0.001)
 		var savedSize = config.get_value("settings", "crosshairSize", 1.0)
 		crosshairRect.scale = Vector2(savedSize, savedSize)
 

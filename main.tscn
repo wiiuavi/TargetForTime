@@ -2,6 +2,14 @@
 
 [ext_resource type="Script" uid="uid://0ofwx6t35kkt" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="Texture2D" uid="uid://wifcdubmjymy" path="res://media/crosshair.png" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://djlpacbs74mkh" path="res://media/wall1.png" id="3_h2yge"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_km21w"]
+shading_mode = 0
+albedo_texture = ExtResource("3_h2yge")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ep2wn"]
+size = Vector2(20, 15)
 
 [node name="main" type="Node3D" unique_id=273629963]
 script = ExtResource("1_ig7tw")
@@ -108,3 +116,18 @@ min_value = 0.1
 max_value = 3.0
 step = 0.1
 value = 1.0
+
+[node name="FrontWall" type="MeshInstance3D" parent="." unique_id=2043877220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10)
+material_override = SubResource("StandardMaterial3D_km21w")
+mesh = SubResource("QuadMesh_ep2wn")
+
+[node name="LeftWall" type="MeshInstance3D" parent="." unique_id=173366773]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -6, 2, -5)
+material_override = SubResource("StandardMaterial3D_km21w")
+mesh = SubResource("QuadMesh_ep2wn")
+
+[node name="RightWall" type="MeshInstance3D" parent="." unique_id=1823990324]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6, 2, -5)
+material_override = SubResource("StandardMaterial3D_km21w")
+mesh = SubResource("QuadMesh_ep2wn")
