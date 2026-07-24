@@ -42,7 +42,6 @@ mouse_filter = 2
 texture = ExtResource("2_0xm2m")
 
 [node name="PauseMenu" type="Control" parent="CanvasLayer" unique_id=153373197]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,10 +97,6 @@ max_value = 0.01
 step = 0.001
 value = 0.003
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=444891299]
-layout_mode = 2
-text = "Quit Game"
-
 [node name="CrosshairSizeBox" type="HBoxContainer" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=2035253788]
 layout_mode = 2
 
@@ -116,6 +111,193 @@ min_value = 0.1
 max_value = 3.0
 step = 0.1
 value = 1.0
+
+[node name="PauseTitleButton" type="Button" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=1620929692]
+layout_mode = 2
+text = "Title Screen"
+
+[node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=444891299]
+layout_mode = 2
+text = "Quit Game"
+
+[node name="RedTint" type="ColorRect" parent="CanvasLayer" unique_id=617643371]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0.19607843)
+
+[node name="HUD" type="Control" parent="CanvasLayer" unique_id=1670066841]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TimerLabel" type="Label" parent="CanvasLayer/HUD" unique_id=2143271455]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -191.0
+offset_bottom = 67.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 48
+text = "00:00:00"
+horizontal_alignment = 2
+
+[node name="StopwatchLabel" type="Label" parent="CanvasLayer/HUD" unique_id=43569961]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -95.0
+offset_top = -34.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5370987, 0.5370987, 0.5370987, 1)
+theme_override_font_sizes/font_size = 24
+text = "00:00:00"
+horizontal_alignment = 2
+
+[node name="TitleScreen" type="Control" parent="CanvasLayer" unique_id=1348650474]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/TitleScreen" unique_id=72199208]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="Label" type="Label" parent="CanvasLayer/TitleScreen" unique_id=1177059283]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -410.0
+offset_top = 70.0
+offset_right = 410.0
+offset_bottom = 202.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 96
+text = "TARGET FOR TIME"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="CanvasLayer/TitleScreen" unique_id=1771033325]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -98.0
+offset_top = -33.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+text = "Start Game"
+
+[node name="TitleSensBox" type="HBoxContainer" parent="CanvasLayer/TitleScreen" unique_id=42749887]
+layout_mode = 0
+offset_left = 419.0
+offset_top = 481.0
+offset_right = 711.0
+offset_bottom = 511.0
+
+[node name="Label" type="Label" parent="CanvasLayer/TitleScreen/TitleSensBox" unique_id=1672110849]
+layout_mode = 2
+text = "Sensitivity: "
+
+[node name="SensSlider" type="HSlider" parent="CanvasLayer/TitleScreen/TitleSensBox" unique_id=1863558374]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+min_value = 0.001
+max_value = 0.01
+step = 0.001
+value = 0.003
+
+[node name="TitleQuitButton" type="Button" parent="CanvasLayer/TitleScreen" unique_id=2141278317]
+layout_mode = 0
+offset_left = 532.0
+offset_top = 590.0
+offset_right = 624.0
+offset_bottom = 621.0
+text = "Quit Game"
+
+[node name="TitleSizeBox" type="HBoxContainer" parent="CanvasLayer/TitleScreen" unique_id=128147794]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 536.0
+offset_right = 737.0
+offset_bottom = 566.0
+
+[node name="Label" type="Label" parent="CanvasLayer/TitleScreen/TitleSizeBox" unique_id=2114073795]
+layout_mode = 2
+text = "Crosshair Size: "
+
+[node name="SizeSlider" type="HSlider" parent="CanvasLayer/TitleScreen/TitleSizeBox" unique_id=1048890760]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+min_value = 0.1
+max_value = 3.0
+step = 0.1
+value = 1.0
+
+[node name="GameOverScreen" type="Control" parent="CanvasLayer" unique_id=1563057415]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen" unique_id=1422785668]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=1332144251]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="CanvasLayer/GameOverScreen" unique_id=1720148781]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Play Again"
+
+[node name="TitleButton" type="Button" parent="CanvasLayer/GameOverScreen" unique_id=1835147015]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Title Screen"
 
 [node name="FrontWall" type="MeshInstance3D" parent="." unique_id=2043877220]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10)
