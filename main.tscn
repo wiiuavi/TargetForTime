@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://0ofwx6t35kkt" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="Texture2D" uid="uid://wifcdubmjymy" path="res://media/crosshair.png" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://c1psarbrp5bcm" path="res://media/title1.png" id="3_1bvp3"]
 [ext_resource type="Texture2D" uid="uid://djlpacbs74mkh" path="res://media/wall1.png" id="3_h2yge"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_km21w"]
@@ -185,7 +186,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.5882353)
 
-[node name="Label" type="Label" parent="CanvasLayer/TitleScreen" unique_id=1177059283]
+[node name="title" type="TextureRect" parent="CanvasLayer/TitleScreen" unique_id=817564559]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -195,9 +196,7 @@ offset_top = 70.0
 offset_right = 410.0
 offset_bottom = 202.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 96
-text = "TARGET FOR TIME"
-horizontal_alignment = 1
+texture = ExtResource("3_1bvp3")
 
 [node name="StartButton" type="Button" parent="CanvasLayer/TitleScreen" unique_id=1771033325]
 layout_mode = 1

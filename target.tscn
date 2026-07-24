@@ -1,6 +1,13 @@
 [gd_scene format=3 uid="uid://0qw65x8h63b"]
 
 [ext_resource type="Script" uid="uid://ceg4kjvwwuerl" path="res://target.gd" id="1_t2jmu"]
+[ext_resource type="Texture2D" uid="uid://bboc1l5a227p" path="res://media/Target1.png" id="2_e1yvt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ebp1"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = ExtResource("2_e1yvt")
 
 [sub_resource type="SphereMesh" id="SphereMesh_ep2wn"]
 
@@ -11,6 +18,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 script = ExtResource("1_t2jmu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1594345898]
+material_override = SubResource("StandardMaterial3D_5ebp1")
 mesh = SubResource("SphereMesh_ep2wn")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1431964517]
