@@ -42,6 +42,16 @@ size_flags_vertical = 4
 mouse_filter = 2
 texture = ExtResource("2_0xm2m")
 
+[node name="RedTint" type="ColorRect" parent="CanvasLayer" unique_id=617643371]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0.19607843)
+
 [node name="PauseMenu" type="Control" parent="CanvasLayer" unique_id=153373197]
 layout_mode = 3
 anchors_preset = 15
@@ -120,16 +130,6 @@ text = "Title Screen"
 [node name="QuitButton" type="Button" parent="CanvasLayer/PauseMenu/MenuBox" unique_id=444891299]
 layout_mode = 2
 text = "Quit Game"
-
-[node name="RedTint" type="ColorRect" parent="CanvasLayer" unique_id=617643371]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 0.19607843)
 
 [node name="HUD" type="Control" parent="CanvasLayer" unique_id=1670066841]
 layout_mode = 3
