@@ -11,6 +11,9 @@ Each miss deducts 1s from your countdown, so try to hit the targets! _It is call
 After 30s of gameplay, **SHOWDOWN** occurs! Each target will give half the time, and 30s later, your countdown will decrease **twice** as fast!	
 _This is to speed up gameplay and reduce strain on your hand_	
 
+<img width="1147" height="652" alt="image" src="https://github.com/user-attachments/assets/81bdd35a-5dff-4ced-b5e9-16203b8422d7" />  
+_Expect it to be buns, made the assets in ms paint gng_  
+
 # Credits		
 WiiUAvi			- main dev, assets
 CrushedPlate647	- secondary dev, assets
