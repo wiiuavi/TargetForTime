@@ -152,6 +152,11 @@ theme_override_font_sizes/font_size = 48
 text = "00:00:00"
 horizontal_alignment = 2
 
+[node name="StatsLabel" type="Label" parent="CanvasLayer/HUD" unique_id=985652364]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="StopwatchLabel" type="Label" parent="CanvasLayer/HUD" unique_id=43569961]
 layout_mode = 1
 anchors_preset = 3
@@ -285,6 +290,11 @@ offset_bottom = 23.0
 text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="GameOverStatsLabel" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=1940401667]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
 
 [node name="PlayAgainButton" type="Button" parent="CanvasLayer/GameOverScreen" unique_id=1720148781]
 layout_mode = 0

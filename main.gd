@@ -8,9 +8,15 @@ var targetScene: PackedScene = preload("res://target.tscn")
 enum GameState { TITLE, COUNTDOWN, PLAYING, PAUSED, GAME_OVER }
 var currentState: GameState = GameState.TITLE
 
-var timeLeft: float = 15.0
+var timeLeft: float = 25.0
 var stopwatch: float = 0.0
+var targetsHit: int = 0
+var shotsFired: int = 0
+
 var suddenDeath: bool = false
+var doubleSpeed: bool = false
+var blinkTimer: float = 0.0
+
 var sensitivity: float = 0.001
 var savePath: String = "user://settings.cfg"
 
@@ -19,6 +25,7 @@ var savePath: String = "user://settings.cfg"
 @onready var hud: Control = $CanvasLayer/HUD
 @onready var timerLabel: Label = $CanvasLayer/HUD/TimerLabel
 @onready var stopwatchLabel: Label = $CanvasLayer/HUD/StopwatchLabel
+@onready var hudStatsLabel: Label = $CanvasLayer/HUD.find_child("StatsLabel", true, false)
 
 @onready var pauseMenu: Control = $CanvasLayer/PauseMenu
 @onready var resumeButton: Button = $CanvasLayer/PauseMenu.find_child("ResumeButton", true, false)
@@ -36,11 +43,14 @@ var savePath: String = "user://settings.cfg"
 @onready var gameOverScreen: Control = $CanvasLayer/GameOverScreen
 @onready var playAgainButton: Button = $CanvasLayer/GameOverScreen.find_child("PlayAgainButton", true, false)
 @onready var titleButton: Button = $CanvasLayer/GameOverScreen.find_child("TitleButton", true, false)
+@onready var gameOverStatsLabel: Label = $CanvasLayer/GameOverScreen.find_child("GameOverStatsLabel", true, false)
 
 var activePopups: Array[Label] = []
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	setupUILayouts()
 	
 	if startButton: startButton.pressed.connect(_onStartPressed)
 	if titleQuitButton: titleQuitButton.pressed.connect(_onQuitPressed)
@@ -75,13 +85,98 @@ func _ready() -> void:
 	loadSettings()
 	goToTitleScreen()
 
+func setupUILayouts() -> void:
+	var screenWidth = get_viewport().get_visible_rect().size.x
+	var screenHeight = get_viewport().get_visible_rect().size.y
+	
+	for screen in [titleScreen, pauseMenu, gameOverScreen, hud]:
+		if screen:
+			screen.anchors_preset = Control.PRESET_FULL_RECT
+			screen.mouse_filter = Control.MOUSE_FILTER_IGNORE if screen == hud else Control.MOUSE_FILTER_STOP
+			
+	if redTint:
+		redTint.anchors_preset = Control.PRESET_FULL_RECT
+		redTint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	if hudStatsLabel:
+		hudStatsLabel.anchors_preset = Control.PRESET_TOP_LEFT
+		hudStatsLabel.position = Vector2(20, 20)
+		hudStatsLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+
+	if timerLabel:
+		timerLabel.anchors_preset = Control.PRESET_TOP_RIGHT
+		timerLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		timerLabel.position = Vector2(screenWidth - 220, 20)
+
+	if stopwatchLabel:
+		stopwatchLabel.anchors_preset = Control.PRESET_TOP_RIGHT
+		stopwatchLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		stopwatchLabel.position = Vector2(screenWidth - 220, 70)
+
+	if gameOverScreen:
+		var bg = gameOverScreen.find_child("ColorRect", true, false)
+		if bg:
+			bg.anchors_preset = Control.PRESET_FULL_RECT
+			bg.color = Color(0, 0, 0, 0.85)
+
+		var goTitle = gameOverScreen.find_child("Label", true, false)
+		if goTitle and goTitle != gameOverStatsLabel:
+			goTitle.text = "GAME OVER"
+			goTitle.add_theme_font_size_override("font_size", 56)
+			goTitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			goTitle.size = Vector2(400, 70)
+			goTitle.position = Vector2((screenWidth - 400) / 2.0, screenHeight * 0.15)
+
+		if gameOverStatsLabel:
+			gameOverStatsLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			gameOverStatsLabel.add_theme_font_size_override("font_size", 26)
+			gameOverStatsLabel.size = Vector2(360, 160)
+			gameOverStatsLabel.position = Vector2(
+				(screenWidth - 360) / 2.0,
+				screenHeight * 0.32
+			)
+
+		var buttonWidth = 320.0
+		var buttonHeight = 50.0
+
+		if playAgainButton:
+			playAgainButton.custom_minimum_size = Vector2(buttonWidth, buttonHeight)
+			playAgainButton.size = Vector2(buttonWidth, buttonHeight)
+			playAgainButton.add_theme_font_size_override("font_size", 22)
+			playAgainButton.position = Vector2(
+				(screenWidth - buttonWidth) / 2.0,
+				screenHeight * 0.62
+			)
+
+		if titleButton:
+			titleButton.custom_minimum_size = Vector2(buttonWidth, buttonHeight)
+			titleButton.size = Vector2(buttonWidth, buttonHeight)
+			titleButton.add_theme_font_size_override("font_size", 22)
+			titleButton.position = Vector2(
+				(screenWidth - buttonWidth) / 2.0,
+				screenHeight * 0.73
+			)
+
 func _process(delta: float) -> void:
 	if currentState == GameState.PLAYING:
-		timeLeft -= delta
+		if doubleSpeed:
+			timeLeft -= (delta * 2.0)
+			
+			blinkTimer += delta * 6.0
+			if int(blinkTimer) % 2 == 0:
+				timerLabel.add_theme_color_override("font_color", Color.WHITE)
+			else:
+				timerLabel.add_theme_color_override("font_color", Color(1, 0.2, 0.2))
+		else:
+			timeLeft -= delta
+			
 		stopwatch += delta
 		
-		if stopwatch >= 60.0 and not suddenDeath:
+		if stopwatch >= 30.0 and not suddenDeath:
 			triggerSuddenDeath()
+			
+		if stopwatch >= 60.0 and not doubleSpeed:
+			doubleSpeed = true
 			
 		if timeLeft <= 0:
 			timeLeft = 0
@@ -106,24 +201,32 @@ func _unhandled_input(event: InputEvent) -> void:
 				shoot()
 
 func shoot() -> void:
+	shotsFired += 1
+	
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 		if collider and collider.has_method("onHit"):
+			targetsHit += 1
+			
 			var dist = camera.global_position.distance_to(collider.global_position)
 			var timeBonus = 0.0
 			
-			if dist > 6.0: timeBonus = 1.0
-			elif dist > 4.0: timeBonus = 0.5
-			else: timeBonus = 0.25
+			if dist > 6.0: timeBonus = 0.5
+			elif dist > 4.0: timeBonus = 0.25
+			else: timeBonus = 0.125
 			
 			if suddenDeath:
 				timeBonus /= 2.0
 				
 			timeLeft += timeBonus
-			showTimePopup(timeBonus)
+			showTimePopup(timeBonus, true)
 			
 			collider.onHit()
 			spawnTarget()
+			return
+	
+	timeLeft -= 1.0
+	showTimePopup(-1.0, false)
 
 func spawnTarget() -> void:
 	var newTarget = targetScene.instantiate()
@@ -141,9 +244,13 @@ func clearTargets() -> void:
 		node.queue_free()
 
 func resetGameData() -> void:
-	timeLeft = 15.0
+	timeLeft = 25.0
 	stopwatch = 0.0
+	targetsHit = 0
+	shotsFired = 0
 	suddenDeath = false
+	doubleSpeed = false
+	blinkTimer = 0.0
 	redTint.hide()
 	timerLabel.add_theme_color_override("font_color", Color.WHITE)
 	clearTargets()
@@ -162,6 +269,7 @@ func goToTitleScreen() -> void:
 	crosshairRect.hide()
 	
 	if startButton: startButton.text = "Start Game"
+	if playAgainButton: playAgainButton.text = "Play Again"
 	clearTargets()
 
 func _onStartPressed() -> void:
@@ -181,6 +289,21 @@ func _onStartPressed() -> void:
 	if titleSensSlider: titleSensSlider.editable = true
 	if titleSizeSlider: titleSizeSlider.editable = true
 	if titleQuitButton: titleQuitButton.disabled = false
+	startGame()
+
+func _onPlayAgainPressed() -> void:
+	currentState = GameState.COUNTDOWN
+	
+	if titleButton: titleButton.disabled = true
+	
+	if playAgainButton: playAgainButton.text = "3"
+	await get_tree().create_timer(1.0).timeout
+	if playAgainButton: playAgainButton.text = "2"
+	await get_tree().create_timer(1.0).timeout
+	if playAgainButton: playAgainButton.text = "1"
+	await get_tree().create_timer(1.0).timeout
+	
+	if titleButton: titleButton.disabled = false
 	startGame()
 
 func startGame() -> void:
@@ -219,11 +342,25 @@ func triggerGameOver() -> void:
 	hud.hide()
 	crosshairRect.hide()
 	redTint.hide()
+	
+	if playAgainButton:
+		playAgainButton.text = "Play Again"
+	
+	var accuracy = 0.0
+	if shotsFired > 0:
+		accuracy = (float(targetsHit) / float(shotsFired)) * 100.0
+		
+	if gameOverStatsLabel:
+		gameOverStatsLabel.text = "Time Survived: %s\nTargets Hit: %d\nShots Fired: %d\nAccuracy: %.1f%%" % [formatTime(stopwatch), targetsHit, shotsFired, accuracy]
+	
 	gameOverScreen.show()
 
 func updateHUD() -> void:
 	timerLabel.text = formatTime(timeLeft)
 	stopwatchLabel.text = formatTime(stopwatch)
+	
+	if hudStatsLabel:
+		hudStatsLabel.text = "Hits: %d | Shots: %d" % [targetsHit, shotsFired]
 
 func formatTime(time: float) -> String:
 	var m = int(time) / 60
@@ -231,11 +368,15 @@ func formatTime(time: float) -> String:
 	var ms = int(fmod(time, 1.0) * 100)
 	return "%02d:%02d:%02d" % [m, s, ms]
 
-func showTimePopup(amount: float) -> void:
+func showTimePopup(amount: float, isHit: bool) -> void:
 	var lbl = Label.new()
-	lbl.text = "+%.2f" % amount
+	lbl.text = ("+" if amount > 0 else "") + "%.2f" % amount
 	lbl.add_theme_font_size_override("font_size", 28)
-	lbl.add_theme_color_override("font_color", Color.GREEN if not suddenDeath else Color.ORANGE)
+	
+	if isHit:
+		lbl.add_theme_color_override("font_color", Color.GREEN if not suddenDeath else Color.ORANGE)
+	else:
+		lbl.add_theme_color_override("font_color", Color.RED)
 	
 	hud.add_child(lbl)
 	
@@ -272,9 +413,6 @@ func updatePopupPositions() -> void:
 
 func _onResumePressed() -> void:
 	togglePause()
-
-func _onPlayAgainPressed() -> void:
-	startGame()
 
 func _onTitlePressed() -> void:
 	goToTitleScreen()
