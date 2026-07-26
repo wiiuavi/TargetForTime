@@ -20,6 +20,15 @@ var blinkTimer: float = 0.0
 var sensitivity: float = 0.001
 var savePath: String = "user://settings.cfg"
 
+# --- 3D Gun View Model ---
+@onready var gun3D: Sprite3D = $Camera3D.find_child("Gun3D", true, false)
+var gunIdleTex: Texture2D = preload("res://media/gun1.png")
+var gunShotTex: Texture2D = preload("res://media/gun1shot.png")
+var gunTween: Tween
+var baseGunRotX: float = 12.0
+var baseGunRotY: float = -30.0
+var baseGunRotZ: float = 5.0
+
 @onready var crosshairRect: TextureRect = $CanvasLayer/crosshair
 @onready var redTint: ColorRect = $CanvasLayer/RedTint
 @onready var hud: Control = $CanvasLayer/HUD
@@ -81,6 +90,9 @@ func _ready() -> void:
 		slider.value_changed.connect(_onCrosshairSizeChanged)
 	
 	crosshairRect.pivot_offset = crosshairRect.size / 2.0
+	
+	if gun3D:
+		gun3D.rotation_degrees = Vector3(baseGunRotX, baseGunRotY, baseGunRotZ)
 	
 	loadSettings()
 	goToTitleScreen()
@@ -203,6 +215,21 @@ func _unhandled_input(event: InputEvent) -> void:
 func shoot() -> void:
 	shotsFired += 1
 	
+	# --- 3D Gun Recoil & Texture Flash ---
+	if gun3D:
+		if gunTween: gunTween.kill()
+		gun3D.texture = gunShotTex
+		
+		# Kick gun pitch back and rotate upward
+		gun3D.rotation_degrees = Vector3(baseGunRotX + 18.0, baseGunRotY, baseGunRotZ - 8.0)
+		
+		gunTween = create_tween()
+		gunTween.tween_property(gun3D, "rotation_degrees", Vector3(baseGunRotX, baseGunRotY, baseGunRotZ), 0.12).set_ease(Tween.EASE_OUT)
+		
+		var texTimer = get_tree().create_timer(0.08)
+		texTimer.timeout.connect(func(): if is_instance_valid(gun3D): gun3D.texture = gunIdleTex)
+
+	# --- Hit Registration ---
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 		if collider and collider.has_method("onHit"):
@@ -225,6 +252,7 @@ func shoot() -> void:
 			spawnTarget()
 			return
 	
+	# Miss
 	timeLeft -= 1.0
 	showTimePopup(-1.0, false)
 
@@ -267,6 +295,7 @@ func goToTitleScreen() -> void:
 	hud.hide()
 	redTint.hide()
 	crosshairRect.hide()
+	if gun3D: gun3D.hide()
 	
 	if startButton: startButton.text = "Start Game"
 	if playAgainButton: playAgainButton.text = "Play Again"
@@ -314,6 +343,7 @@ func startGame() -> void:
 	gameOverScreen.hide()
 	hud.show()
 	crosshairRect.show()
+	if gun3D: gun3D.show()
 	
 	for i in range(3):
 		spawnTarget()
@@ -342,6 +372,7 @@ func triggerGameOver() -> void:
 	hud.hide()
 	crosshairRect.hide()
 	redTint.hide()
+	if gun3D: gun3D.hide()
 	
 	if playAgainButton:
 		playAgainButton.text = "Play Again"

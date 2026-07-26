@@ -27,7 +27,6 @@ script = ExtResource("1_ig7tw")
 [node name="Gun3D" type="Sprite3D" parent="Camera3D" unique_id=1780554583]
 transform = Transform3D(0.089646295, -0.015209756, -0.041619774, 0.008583165, 0.09810603, -0.017364819, 0.043472655, 0.011994622, 0.089253895, 0.35, -0.25, -0.6)
 cast_shadow = 0
-flip_h = true
 no_depth_test = true
 texture = ExtResource("3_7mycd")
 
