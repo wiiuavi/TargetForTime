@@ -15,9 +15,9 @@ _This is to speed up gameplay and reduce strain on your hand_
 _Expect it to be buns, made the assets in ms paint gng_  
 
 # Credits		
-WiiUAvi			- main dev, assets
-CrushedPlate647	- secondary dev, assets
-Babooda			- assets, sounds
+WiiUAvi            - main dev, assets (incl wall textures)    
+CrushedPlate647    - secondary dev, assets (incl title screen, target textures, gun texture)    
+Babooda            - assets, sounds (floor textures, sounds (we  removed this later, as if anyone did play it, it would likely be before or during playing another FPS (like a mini aimtrainer))     
 
 
 # Todo		
