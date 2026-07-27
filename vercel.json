@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/game/TargetForTime.html" },
+    { "source": "/(.*)", "destination": "/game/$1" }
+  ]
+}
